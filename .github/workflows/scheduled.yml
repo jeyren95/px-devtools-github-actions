@@ -1,0 +1,16 @@
+# workflow name
+name: scheduled
+# event
+on:
+  # event name
+  schedule:
+    # cron syntax => minute, hour, day of month (1-31), month (1-12 or JAN-DEC), day of week (0-6 or SUN-SAT)
+    - cron: "*/5 * * * *"
+# job
+jobs:
+  # job name
+  scheduled:
+    runs-on: ubuntu-latest
+    # steps
+    steps:
+      - run: echo "This job runs every 5 minutes"
