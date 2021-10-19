@@ -16,5 +16,5 @@ jobs:
     runs-on: ubuntu-latest
     # steps => each step is either an action or a shell command
     steps:
-      - runs: echo "This jobs runs on push to master branch"
+      - run: echo "This jobs runs on push to master branch"
 
