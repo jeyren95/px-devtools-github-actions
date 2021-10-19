@@ -1,5 +1,5 @@
 # workflow name
-manual:
+name: manual
 # event
 on:
   # workflow_dispatch is a manual event => it triggers specific workflows in a repo
