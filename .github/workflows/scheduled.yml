@@ -13,4 +13,4 @@ jobs:
     runs-on: ubuntu-latest
     # steps
     steps:
-      - run: echo "This job runs every 5 minutes"
+      - run: echo This job runs every 5 minutes

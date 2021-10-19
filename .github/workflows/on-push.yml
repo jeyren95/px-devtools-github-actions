@@ -6,7 +6,7 @@ on:
   push:
     # this is to filter through the branches that you want the workflow to act upon
     branches:
-      - "master"
+      - master
 # jobs
 jobs:
   # each job is run by a runner => this runner can a github-hosted runner
@@ -16,5 +16,5 @@ jobs:
     runs-on: ubuntu-latest
     # steps => each step is either an action or a shell command
     steps:
-      - run: echo "This jobs runs on push to master branch"
+      - run: echo This jobs runs on push to master branch
 

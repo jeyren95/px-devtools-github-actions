@@ -16,6 +16,7 @@ jobs:
     # type of runner that the job is assigned to => rmb that runners are docker containers that execute the job
     runs-on: ubuntu-latest
     steps:
-      # context are a way to access information about workflow runs, runner environments, jobs and steps => uses the expression syntax ${{ }}
+      # context are a way to access information about workflow runs, runner environments, jobs and steps 
+      # contexts use the expression syntax (${{ }}) => the below is the same as "github.event.inputs.name && github.event.inputs.name" 
       - run: echo "Hello ${{ github.event.inputs.name }}"
 
