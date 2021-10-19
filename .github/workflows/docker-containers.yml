@@ -1,0 +1,31 @@
+# workflow name
+name: docker-containers
+# event
+on:
+  push:
+    branches:
+      - "master"
+# jobs
+jobs:
+  # each job is executed by a runner => runner is a docker container 
+  # each runner has a type
+  setup-node:
+    runs-on: ubuntu-latest
+    # container to run any steps in a job that don't already specify a container
+    # this means that the steps that don't specify a container to run them => will be run directly on the host specified by "runs-on" as above
+    container:
+      image: node:16
+      env:
+        NODE_ENV: development
+      # array of ports to expose on the container
+      ports:
+        - 80
+      # array of volumes for the container to use 
+      # to specify a volume => <source>:<destination_path> => same as the volume mounting in the docker exercise
+      volumes:
+        - my_docker_volume:/tmp
+      options: --cpus 0.2 --network-alias maincontainer
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm -v
+      - run: node -v
