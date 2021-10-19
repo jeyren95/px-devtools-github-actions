@@ -1,0 +1,20 @@
+# workflow name
+name: on-push
+# event
+on: 
+  # event name
+  push:
+    # this is to filter through the branches that you want the workflow to act upon
+    branches:
+      - "master"
+# jobs
+jobs:
+  # each job is run by a runner => this runner can a github-hosted runner
+  # a runner is a docker container 
+  on-push:
+    # runner type
+    runs-on: ubuntu-latest
+    # steps => each step is either an action or a shell command
+    steps:
+      - runs: echo "This jobs runs on push to master branch"
+
