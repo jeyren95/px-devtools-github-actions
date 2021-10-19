@@ -1,0 +1,36 @@
+# workflow name
+name: service-containers
+# event
+on:
+  push:
+    branches:
+      - master
+jobs:
+  container-job:
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu
+    env:
+      DATABASE_NAME: my_database
+      DATABASE_USER: foo_user
+      DATABASE_PASSWORD: password
+    # service containers are useful for creating databases (e.g. postgres) or cache services (e.g. redis)
+    # the runner automatically creates a docker network and manages the life cycle of the service container
+    # if configure the job to run in a container 
+        # don't need to map ports => docker automatically exposes all ports between containers on the same Docker network
+        # can directly reference the service container by its hostname => this hostname is the label name that is configured for the service in the workflow i.e. "postgres"
+    services:
+      postgres:
+        image: postgres 
+        env: 
+          # using context to access the environment variables
+          POSTGRES_DB: ${{ env.DATABASE_NAME }}
+          POSTGRES_USER: ${{ env.DATABASE_USER }}
+          POSTGRES_PASSWORD: ${{ env.DATABASE_PASSWORD }}
+    steps:
+      - name: Install psql client
+        run: apt-get -y update && apt-get -y install postgresql-client
+      - name: Connect to PostgreSQL
+        env:
+          PGPASSWORD: ${{ env.DATABASE_PASSWORD }}
+        run: psql -U ${{ env.DATABASE_USER }} -d ${{ env.DATABASE_NAME }} -h postgres -c 'select * from information_schema.tables;'
