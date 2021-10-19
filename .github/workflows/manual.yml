@@ -1,0 +1,21 @@
+# workflow name
+manual:
+# event
+on:
+  # workflow_dispatch is a manual event => it triggers specific workflows in a repo
+  workflow_dispatch:
+    inputs:
+      name:
+        description: The name to echo
+        default: World
+        required: false
+# jobs
+jobs:
+  # job name  
+  manual:
+    # type of runner that the job is assigned to => rmb that runners are docker containers that execute the job
+    runs-on: ubuntu-latest
+    steps:
+      # context are a way to access information about workflow runs, runner environments, jobs and steps => uses the expression syntax ${{ }}
+      - run: echo "Hello ${{ github.event.inputs.name }}"
+
