@@ -1,0 +1,34 @@
+# github actions are event-driven 
+# types of events => scheduled (e.g. time), manual (e.g. button click), webhooks (e.g. push activity, pull requests)
+# an event triggers a workflow => each workflow consists of several jobs => each job consists of several steps => each step can either be an action or a shell command
+# the jobs are assigned to different runners => each runner is a container and the jobs are executed inside each container
+
+# workflow name
+name: setup-node
+# event => string/array of events
+on: [push]
+# jobs
+jobs:
+  # job name
+  setup-node:
+    # specify the runner type that this job is assigned to => ubuntu-latest is a github-hosted runner
+    # each job is assigned to a runner, which is a docker container
+    runs-on: ubuntu-latest
+    # steps => each step can be an action or a shell command
+    steps:
+      # an action is a reusable unit of code => either a javascript file (public action) or a docker container 
+      # "uses" keyword selects an action to run as part of a step in the job 
+      # this is an example of a public action (which can be found on the github marketplace) 
+        # checkout@v2 => checks out your repo so that your workflow can access the repo
+      - uses: actions/checkout@v2
+
+      # some public actions require inputs that is used with the "with" keyword
+      # setup-node@v2 => helps to cache the package dependencies by searching for the dependency file (package.json) in the repo, and uses its hash as part of the cache key
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      # "run" keyword runs command-line programs using the runner's OS shell
+      # can actually override the default shell settings in the runner's OS shell by using the "shell" keyword
+      - run: npm -v
+      - run: node -v
