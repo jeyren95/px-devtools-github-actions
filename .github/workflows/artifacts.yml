@@ -36,7 +36,7 @@ jobs:
       - name: Upload math result for multiplication job
         uses: actions/upload-artifact@v2
         with:
-          name: homework:
+          name: homework
           path: math-homework.txt
   display:
     name: Display results
