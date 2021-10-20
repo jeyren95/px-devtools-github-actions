@@ -37,6 +37,7 @@ jobs:
       - name: Cache files
         # id serves as unique identifier for the step => can use id to reference the step in contexts
         id: cache-step
+        uses: actions/cache@v2
         env: 
           cache-name: cache-files
         # "with" keyword provides a map of the input parameters defined by the action
