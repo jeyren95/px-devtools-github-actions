@@ -38,7 +38,8 @@ jobs:
         # id serves as unique identifier for the step => can use id to reference the step in contexts
         id: cache-step
         env: 
-          CACHE_NAME: cache-files
+          cache-name: cache-files
+        # "with" keyword provides a map of the input parameters defined by the action
         with:
           path: ./cache-files
           key: cache-files-${{ hashFiles('./cache-files/*') }}
