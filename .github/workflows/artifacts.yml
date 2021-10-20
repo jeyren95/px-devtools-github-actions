@@ -31,8 +31,8 @@ jobs:
           name: homework
       - shell: bash
         run: |
-          value = `cat math-homework.txt`
-          expr $value \* 9 > math-homework.txt
+          value=`cat math-homework.txt`
+          expr $value \* 8 > math-homework.txt
       - name: Upload math result for multiplication job
         uses: actions/upload-artifact@v2
         with:
@@ -50,7 +50,7 @@ jobs:
       - name: Print the final result
         shell: bash
         run: |
-          value = `cat math-homework.txt`
+          value=`cat math-homework.txt`
           echo The result is $value
     
       
