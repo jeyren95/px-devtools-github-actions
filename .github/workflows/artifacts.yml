@@ -1,0 +1,56 @@
+# artifacts allow you to share data between jobs in a workflow and store data once the workflow has completed
+# an artifact is a file or collection of files produced during a workflow run
+
+
+name: artifacts
+on: 
+  push: 
+    branches:
+      - master
+jobs:
+  addition:
+    name: 3 and 7
+    runs-on: ubuntu-latest
+    steps:
+      - shell: bash
+        run: expr 3 + 7 > math-homework.txt
+      - name: Upload math result for addition job
+        uses: actions/upload-artifact@v2
+        with:
+          name: homework
+          path: math-homework.txt
+  multiplication:
+    name: Multiply by 8
+    needs: addition
+    runs-on: windows-latest
+    steps:
+      - name: Download math result from addition-job
+        # by default, the download-artifact action downloads artifacts to the workspace directory that the step is executing in
+        uses: actions/download-artifact@v2
+        with:
+          name: homework
+      - shell: bash
+        run: |
+          value = `cat math-homework.txt`
+          expr $value \* 9 > math-homework.txt
+      - name: Upload math result for multiplication job
+        uses: actions/upload-artifact@v2
+        with:
+          name: homework:
+          path: math-homework.txt
+  display:
+    name: Display results
+    needs: multiplication
+    runs-on: macOS-latest
+    steps:
+      - name: Download math result from multiplication-job
+        uses: actions/download-artifact@v2
+        with:
+          name: homework
+      - name: Print the final result
+        shell: bash
+        run: |
+          value = `cat math-homework.txt`
+          echo The result is $value
+    
+      
