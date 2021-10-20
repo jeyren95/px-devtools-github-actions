@@ -1,0 +1,19 @@
+name: conditionals-steps
+on:
+  push:
+    branches:
+      - master
+jobs:
+  regular_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Success notification
+        run: echo "Regular step"
+        # returns true if none of the previous steps have failed
+        if: ${{ success() }}
+        run: echo "Success"
+      - name: Failure notification
+        # returns true if any of the previous steps have failed
+        if: ${{ failure() }}
+        run: echo "Failure"
+
