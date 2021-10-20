@@ -1,0 +1,50 @@
+# jobs on github-hosted runners start in a clean virtual environment (since they are docker containers) => must download dependencies each time
+# to speed up the time the runners take to recreate these files => can cache dependencies frequently used in workflows
+
+#### Flow
+# when action matches a cache based on the key provided 
+  # this is called a cache hit
+  # actions restores the cached files to the path directory that is configured
+
+# when key does not match any cache
+  # this is called a cache miss
+  # if a list of restore-keys are provided
+    # action searches for any caches that match the list of restore-keys
+      # exact match => restore the files to the path directory configured
+      # partial matches => most recent cache will be restored
+  # if not, the action will create a new cache entry if the job completes successfully
+
+#### Key creation  
+# using expressions to create a key => helps to auto create a new cache when dependencies have changed
+
+#### Matching keys
+# action will first search for cache hits for keys/restore keys in the current branch => then parent branch => then upstream branches
+
+
+name: caching
+on:
+  push:
+    branches:
+      - master
+jobs:
+  caching:
+    runs-on: ubuntu-latest
+    steps:
+      # "uses" keyword selects an action to run as part of a step in the job
+      # remember that a step can either be an action or a shell command
+      # checkout@v2 => public action (javascript template file) that is used to checkout the repo so the workflow has access to it
+      - uses: actions/checkout@v2
+      - name: Cache files
+        # id serves as unique identifier for the step => can use id to reference the step in contexts
+        id: cache-step
+        env: 
+          CACHE_NAME: cache-files
+        with:
+          path: ./cache-files
+          key: cache-files-${{ hashFiles('./cache-files/*') }}
+          restore-keys: cache-files-
+      - run: echo "Cache was not hit"
+        # cache-hit is a boolean value to indicate whether or not the action managed to match any caches with the key provided
+        if: ${{ steps.cache-step.outputs.cache-hit != 'true' }}
+      - run: echo "Cache was hit"
+        if: ${{ steps.cache-step.outputs.cache-hit == 'true' }}
